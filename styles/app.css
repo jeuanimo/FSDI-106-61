@@ -306,3 +306,4 @@ task-table th:nth-child(4), .task-table td:nth-child(4) { width: 10%; }  /* Stat
 @media (max-width: 767.98px) {
   .task-table .color-hex { display: none; }
 }
+}
