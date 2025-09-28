@@ -6,12 +6,19 @@ main {
   min-height: 100vh;
   font-family: var(--bs-body-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif);
 }
+.list{display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  width: 100%;
+
+}
 
 /* Left panel: bold blue gradient using Bootstrap primary shades */
 #list {
   /* layout */
   display: flex;
-  flex:2;
+  flex:3;
   flex-direction:row;
   
 
@@ -36,7 +43,7 @@ main {
   /* layout */
   display: flex;
   flex-direction: row;
-  flex:2;
+  flex:1;
   align-items: center;
   justify-content: center;
 
@@ -123,4 +130,179 @@ main {
   #form {
     padding: 1.25rem .75rem;
   }
+}
+/* ---------- Task cards ---------- */
+#tasksList .card {
+  position: relative;
+  background: #fff;
+  color: var(--bs-body-color);              /* ensure dark text on white card */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  overflow: hidden;                         /* keeps accent strip rounded */
+}
+
+/* Hover lift */
+#tasksList .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Colored accent strip on the left (uses CSS var if present, otherwise border-color) */
+#tasksList .card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--accent, currentColor); /* prefers --accent; see JS tweak below */
+  opacity: 1;
+}
+
+/* If the border-color is set inline (your current render), sync the strip via 'currentColor' */
+#tasksList .card {
+  color: inherit;                           /* so currentColor is usable */
+}
+
+/* Tight, clear card body */
+#tasksList .card .card-body {
+  padding: 1rem 1rem 1.1rem;
+}
+
+/* Title + badge */
+#tasksList .card .card-title {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+#tasksList .badge {
+  border-radius: 999px;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Copy and meta lines */
+#tasksList .card p {
+  margin-bottom: .35rem;
+  color: #495057;
+}
+
+/* Action buttons */
+#tasksList .btn {
+  border-radius: 10px;
+}
+
+#tasksList .btn-outline-primary:hover {
+  background-color: rgba(13, 110, 253, 0.07);
+  border-color: #0d6efd;
+}
+
+#tasksList .btn-outline-danger:hover {
+  background-color: rgba(220, 53, 69, 0.07);
+  border-color: #dc3545;
+}
+
+/* Handle long descriptions gracefully */
+#tasksList .card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;    /* show up to 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Make the empty state look intentional */
+#tasksEmpty {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  padding: .875rem 1rem;
+  display: inline-block;
+}
+
+.app-header {
+  background-color: #000;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1040;
+  width: 100%;
+}
+.app-header .navbar-brand { font-weight: 700; letter-spacing: .3px; }
+/* Force solid black text inside cards */
+#tasksList .task-card,
+#tasksList .task-card .card-body,
+#tasksList .task-card h5,
+#tasksList .task-card p,
+#tasksList .task-card span,
+#tasksList .task-card strong {
+  color: #000 !important;
+}
+
+/* Ensure meta rows (labels/values) are black */
+#tasksList .task-card .task-meta,
+#tasksList .task-card .task-meta .label,
+#tasksList .task-card .task-meta .value {
+  color: #000 !important;
+}
+
+/* Make the status badge black text on light background */
+#tasksList .task-card .task-badge {
+  background-color: #f8f9fa !important; /* light gray */
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+/* No horizontal scrolling inside the card/table */
+.task-card .card-body,
+.task-card .table-responsive { overflow-x: visible !important; }
+
+/* Let table grow naturally and wrap text instead of forcing scrollbars */
+.task-table { table-layout: auto !important; font-size: .95rem; }
+.task-table th, .task-table td {
+  white-space: normal !important;
+  text-overflow: clip !important;
+  word-break: break-word;
+  width: auto !important;       
+
+.task-table td {
+  padding: .4rem .5rem;
+  vertical-align: middle;
+  white-space: nowrap;           /* ellipsis by default */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Column width hints (tweak as needed) */
+.task-table th:nth-child(1), .task-table td:nth-child(1) { width: 18%; } /* Title */
+.task-table th:nth-child(2), .task-table td:nth-child(2) { width: 30%; } /* Description */
+.task-table th:nth-child(3), .task-table td:nth-child(3) { width: 16%; } /* Date */
+task-table th:nth-child(4), .task-table td:nth-child(4) { width: 10%; }  /* Status */
+.task-table th:nth-child(5), .task-table td:nth-child(5) { width: 10%; } /* Budget */
+.task-table th:nth-child(6), .task-table td:nth-child(6) { width: 8%; }  /* Color */
+.task-table th:nth-child(7), .task-table td:nth-child(7) { width: 8%; }  /* Actions */
+
+/* Let description wrap but clamp to 2 lines */
+.task-table .desc-cell {
+  white-space: normal;
+}
+.task-table .desc-cell .desc-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;    /* clamp to 2 lines */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* Make action buttons super-compact */
+.task-table td:last-child .btn {
+  padding: .15rem .45rem;
+  font-size: .75rem;
+  border-radius: 8px;
+}
+
+/* Solid black text throughout the table */
+.task-table, .task-table th, .task-table td { color: #000 !important; }
+
+/* Hide long color hex on small screens; show from md+ */
+@media (max-width: 767.98px) {
+  .task-table .color-hex { display: none; }
 }
