@@ -21,7 +21,7 @@
         this.date = date;
         this.status = status;
         this.budget = budget;
-        this.priority = typeof priority !== 'undefined' ? Number(priority) : 5; // default priority 5
+        this.priority = typeof priority !== "undefined" ? Number(priority) : 5; // default priority 5
         this.createdBy = createdBy || null;
         this.assignedTo = assignedTo || null;
       }

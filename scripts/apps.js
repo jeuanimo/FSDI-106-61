@@ -28,7 +28,7 @@ window.MPS = window.MPS || {};
       this.date = date;
       this.status = status;
       this.budget = budget;
-      this.priority = typeof priority !== 'undefined' ? Number(priority) : 5;
+      this.priority = typeof priority !== "undefined" ? Number(priority) : 5;
     };
 
   // -------- Helpers: formatting --------
@@ -77,7 +77,8 @@ window.MPS = window.MPS || {};
       // Ensure id
       if (!t.id) t.id = Date.now() + Math.floor(Math.random() * 1000);
       // Ensure priority
-      if (typeof t.priority === 'undefined' || t.priority === null) t.priority = 5;
+      if (typeof t.priority === "undefined" || t.priority === null)
+        t.priority = 5;
     });
   }
 
@@ -151,7 +152,12 @@ window.MPS = window.MPS || {};
 
   async function createTaskOnServer(task) {
     // attach current user info
-    const payload = { ...task, user: currentUser, createdBy: task.createdBy || currentUser, assignedTo: task.assignedTo || null };
+    const payload = {
+      ...task,
+      user: currentUser,
+      createdBy: task.createdBy || currentUser,
+      assignedTo: task.assignedTo || null,
+    };
     try {
       const res = await ajaxPromise({
         type: "POST",
@@ -180,7 +186,12 @@ window.MPS = window.MPS || {};
   }
 
   async function updateTaskOnServer(id, values) {
-    const payload = { ...values, user: currentUser, createdBy: values.createdBy || currentUser, assignedTo: values.assignedTo || null };
+    const payload = {
+      ...values,
+      user: currentUser,
+      createdBy: values.createdBy || currentUser,
+      assignedTo: values.assignedTo || null,
+    };
     try {
       const res = await ajaxPromise({
         type: "PUT",
@@ -282,8 +293,8 @@ window.MPS = window.MPS || {};
       const card = `
   <div class="col-12">
     <div class="card h-100 task-card text-dark" data-priority="${escapeHtml(
-          pNum
-        )}" data-priority-text="${escapeHtml(pText)}"
+      pNum
+    )}" data-priority-text="${escapeHtml(pText)}"
          style="--accent:${escapeHtml(
            t.color || "#0d6efd"
          )}; border-color:${escapeHtml(t.color || "#0d6efd")}">
@@ -429,7 +440,8 @@ window.MPS = window.MPS || {};
       return "Please enter a valid non-negative budget.";
     }
     const p = Number(values.priority);
-    if (isNaN(p) || p < 1 || p > 10) return "Please enter a priority between 1 and 10.";
+    if (isNaN(p) || p < 1 || p > 10)
+      return "Please enter a priority between 1 and 10.";
     return null;
   }
 
@@ -462,10 +474,14 @@ window.MPS = window.MPS || {};
     const conflict = checkConflict(vals, editingId);
     if (conflict) {
       if (vals.override) {
-        console.log("[CONFLICT] Override checked; proceeding to save despite conflict.");
+        console.log(
+          "[CONFLICT] Override checked; proceeding to save despite conflict."
+        );
       } else {
         const ok = confirm(
-          `This task conflicts with existing task "${conflict.title || 'Untitled'}" scheduled at the same time. Save anyway?`
+          `This task conflicts with existing task "${
+            conflict.title || "Untitled"
+          }" scheduled at the same time. Save anyway?`
         );
         if (!ok) return;
       }
@@ -540,6 +556,7 @@ window.MPS = window.MPS || {};
   }
 
   // -------- Init --------
+  
   function init() {
     // load local tasks quickly so UI is not empty while network request runs
     loadTasks();
@@ -577,6 +594,7 @@ window.MPS = window.MPS || {};
 
     $("#tasksList").on("click", onTasksClick);
     console.log("App ready");
+    // no automatic scaling applied; the form will use natural height and page scrolling
   }
   // ---- Optional: test the API ----
   function test() {
@@ -631,7 +649,11 @@ window.MPS = window.MPS || {};
       if (!created.id && created._id) created.id = created._id;
       console.log("[API TEST] Create successful:", created);
       if (created && (created.id || created._id)) {
-        logTestResult(`Create succeeded (id: ${created.id || created._id})`, "pass", created);
+        logTestResult(
+          `Create succeeded (id: ${created.id || created._id})`,
+          "pass",
+          created
+        );
       } else {
         logTestResult("Create returned unexpected response", "fail", created);
       }
@@ -655,7 +677,10 @@ window.MPS = window.MPS || {};
         contentType: "application/json",
       });
       console.log("[API TEST] Update response:", updated);
-      if (updated && (updated.id || updated._id || updated.title === updatePayload.title)) {
+      if (
+        updated &&
+        (updated.id || updated._id || updated.title === updatePayload.title)
+      ) {
         logTestResult(`Update succeeded (id: ${created.id})`, "pass", updated);
       } else {
         logTestResult("Update returned unexpected response", "fail", updated);
@@ -672,8 +697,10 @@ window.MPS = window.MPS || {};
           t.id === created.id || t._id === created.id || t.id === created._id
       );
       console.log("[API TEST] After update, fetched item:", found);
-      if (found) logTestResult("Verified task present after update", "pass", found);
-      else logTestResult("Could not verify updated task via GET", "fail", after);
+      if (found)
+        logTestResult("Verified task present after update", "pass", found);
+      else
+        logTestResult("Could not verify updated task via GET", "fail", after);
     } catch (err) {
       console.warn("[API TEST] Could not verify via GET all:", err);
       logTestResult("Verification GET failed", "fail", err);
@@ -702,9 +729,16 @@ window.MPS = window.MPS || {};
     const $out = $("#apiTestLog");
     if (!$out.length) return;
     const time = new Date().toLocaleTimeString();
-    const badgeClass = status === "pass" ? "bg-success" : status === "fail" ? "bg-danger" : "bg-secondary";
+    const badgeClass =
+      status === "pass"
+        ? "bg-success"
+        : status === "fail"
+        ? "bg-danger"
+        : "bg-secondary";
     const $row = $(
-      `<div class="d-flex align-items-start mb-1"><span class="badge ${badgeClass} me-2">${status.toUpperCase()}</span><div><div class="small text-muted">${time}</div><div>${escapeHtml(message)}</div></div></div>`
+      `<div class="d-flex align-items-start mb-1"><span class="badge ${badgeClass} me-2">${status.toUpperCase()}</span><div><div class="small text-muted">${time}</div><div>${escapeHtml(
+        message
+      )}</div></div></div>`
     );
     $out.prepend($row);
     if (data) console.log(`[API TEST][DATA] ${message}`, data);
