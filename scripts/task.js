@@ -3,7 +3,17 @@
   // Avoid redeclaration if Task already exists
   if (!global.Task) {
     class Task {
-      constructor(title, description, color, date, status, budget) {
+      constructor(
+        title,
+        description,
+        color,
+        date,
+        status,
+        budget,
+        priority,
+        createdBy,
+        assignedTo
+      ) {
         this.id = Date.now();
         this.title = title;
         this.description = description; // fixed field name
@@ -11,6 +21,9 @@
         this.date = date;
         this.status = status;
         this.budget = budget;
+        this.priority = typeof priority !== 'undefined' ? Number(priority) : 5; // default priority 5
+        this.createdBy = createdBy || null;
+        this.assignedTo = assignedTo || null;
       }
     }
     global.Task = Task;

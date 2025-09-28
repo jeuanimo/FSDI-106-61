@@ -1,108 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Task List Manager</title>
+    <title>Task List Manager</title>
 
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Custom styles -->
-  <link rel="stylesheet" href="./styles/app.css" />
-</head>
-<body>
- <header class="app-header">
-  <nav class="navbar navbar-expand navbar-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">Task Manager</span>
-    </div>
-  </nav>
-</header>
-   
-  <main>
-    <!-- LEFT: Task list panel (blue side per app.css) -->
-    <section id="list" class="tasks">
-      <div class="container py-3 w-100">
-        <h3 class="text-white mb-3">Task listing:</h3>
-        
-
-        <!-- Empty state (apps.js toggles this) -->
-        <div id="tasksEmpty" class="text-white-50">
-          No tasks yet. Add one on the right →
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="./styles/app.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <nav class="navbar navbar-expand navbar-dark">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">Task Manager</span>
         </div>
+      </nav>
+    </header>
 
-        <!-- Task cards render here -->
-         
-        <div id="tasksList" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4"></div>
-      </div>
-    </section>
+    <main>
+      <!-- LEFT: Task list panel (blue side per app.css) -->
+      <section id="list" class="tasks">
+        <div class="container py-3 w-100">
+          <h3 class="text-white mb-3">Task listing:</h3>
 
-    <!-- RIGHT: Form panel -->
-    <section id="form">
-      <form id="taskForm" class="form-shell">
-        <h1 class="h4 mb-3">Create a task</h1>
+          <!-- Empty state (apps.js toggles this) -->
+          <div id="tasksEmpty" class="text-white-50">
+            No tasks yet. Add one on the right →
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="txtTitle">Title</label>
-          <input type="text" class="form-control" id="txtTitle" />
+          <!-- Task cards render here -->
+
+          <div
+            id="tasksList"
+            class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4"
+          ></div>
         </div>
+      </section>
 
-        <div class="mb-3">
-          <label class="form-label" for="descriptionInput">Description</label>
-          <textarea rows="3" class="form-control" id="descriptionInput"></textarea>
-        </div>
+      <!-- RIGHT: Form panel -->
+      <section id="form">
+        <form id="taskForm" class="form-shell">
+          <h1 class="h4 mb-3">Create a task</h1>
 
-        <div class="mb-3">
-          <label class="form-label" for="selCol">Color</label>
-          <input type="color" class="form-control" id="selCol" value="#0d6efd" />
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="txtTitle">Title</label>
+            <input type="text" class="form-control" id="txtTitle" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="dateTimeLocal">Date</label>
-          <input type="datetime-local" class="form-control" id="dateTimeLocal" />
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="descriptionInput">Description</label>
+            <textarea
+              rows="3"
+              class="form-control"
+              id="descriptionInput"
+            ></textarea>
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="selStatus">Status</label>
-          <select class="form-control" id="selStatus">
-            <option>New</option>
-            <option>In Progress</option>
-            <option>Completed</option>
-            <option>Cancelled</option>
-          </select>
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="selCol">Color</label>
+            <input
+              type="color"
+              class="form-control"
+              id="selCol"
+              value="#0d6efd"
+            />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="numBudget">Budget</label>
-          <input type="number" class="form-control" id="numBudget" min="0" step="0.01" />
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="dateTimeLocal">Date</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="dateTimeLocal"
+            />
+          </div>
 
-        <div class="d-flex gap-2">
-          <button id="btnSave" class="btn btn-primary fw-bold px-4" type="submit">Save</button>
-          <button id="btnCancel" class="btn btn-outline-secondary" type="button" hidden>Cancel</button>
-          <button id="btnReset" class="btn btn-outline-dark" type="reset">Reset</button>
-        </div>
-      </form>
-    </section>
-  </main>
+          <div class="mb-3">
+            <label class="form-label" for="selStatus">Status</label>
+            <select class="form-control" id="selStatus">
+              <option>New</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
 
-  <!-- jQuery (correct SRI for 3.7.1 min) -->
-  <script
-    src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-    crossorigin="anonymous"></script>
+          <div class="mb-3">
+            <label class="form-label" for="numBudget">Budget</label>
+            <input
+              type="number"
+              class="form-control"
+              id="numBudget"
+              min="0"
+              step="0.01"
+            />
+          </div>
 
-  <!-- Bootstrap JS bundle -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+          <div class="mb-3">
+            <label class="form-label" for="numPriority"
+              >Priority (1 - 10)</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="numPriority"
+              min="1"
+              max="10"
+              step="1"
+              value="5"
+            />
+            <div class="form-text">
+              Scale: 1 = High priority, 10 = Low priority.
+            </div>
+          </div>
 
-  <!-- IMPORTANT: load task.js BEFORE apps.js to avoid redeclaration errors -->
-  <script src="./scripts/task.js"></script>
-  <script src="./scripts/apps.js"></script>
-</body>
+          <div class="mb-3">
+            <label class="form-label" for="txtCreatedBy">Created By</label>
+            <input type="text" class="form-control" id="txtCreatedBy" readonly />
+            <div class="form-text">Defaults to your user id/email.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="txtAssignedTo">Assigned To</label>
+            <input type="text" class="form-control" id="txtAssignedTo" />
+            <div class="form-text">Optional: person responsible for this task.</div>
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="chkOverride" />
+            <label class="form-check-label" for="chkOverride"
+              >Override scheduling conflict</label
+            >
+            <div class="form-text">
+              Check to force save even if a conflict is detected.
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button
+              id="btnSave"
+              class="btn btn-primary fw-bold px-4"
+              type="submit"
+            >
+              Save
+            </button>
+            <button
+              id="btnCancel"
+              class="btn btn-outline-secondary"
+              type="button"
+              hidden
+            >
+              Cancel
+            </button>
+            <button id="btnReset" class="btn btn-outline-dark" type="reset">
+              Reset
+            </button>
+            <button
+              id="btnDeleteAll"
+              class="btn btn-outline-danger ms-auto"
+              type="button"
+            >
+              Delete All
+            </button>
+            <button id="btnApiTest" class="btn btn-outline-info" type="button">
+              Test API
+            </button>
+          </div>
+          <!-- API test results log -->
+          <div id="apiTestLog" class="mt-3"></div>
+        </form>
+      </section>
+    </main>
+
+    <!-- jQuery (correct SRI for 3.7.1 min) -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- IMPORTANT: load task.js BEFORE apps.js to avoid redeclaration errors -->
+    <script src="./scripts/task.js"></script>
+    <script src="./scripts/apps.js"></script>
+  </body>
 </html>

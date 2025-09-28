@@ -1,5 +1,22 @@
 /* Bootstrap-first theme (works with your existing HTML) */
 
+:root{
+  /* Palette: royal blue, white, grey, black */
+  --royal-blue: #4169E1; /* royal blue */
+  --royal-rgb: 65,105,225;
+  --white: #ffffff;
+  --muted-grey: #6c757d;
+  --surface-grey: #f4f5f7;
+  --ink-black: #000000;
+
+  /* Bootstrap-compatible variables used by the CSS */
+  --bs-primary: var(--royal-blue);
+  --bs-primary-rgb: var(--royal-rgb);
+  --bs-light: var(--white);
+  --bs-body-bg: var(--white);
+  --bs-body-color: var(--ink-black);
+}
+
 /* Make the main area fill the viewport height */
 main {
     display:flex;
@@ -14,27 +31,23 @@ main {
 
 }
 
-/* Left panel: bold blue gradient using Bootstrap primary shades */
+/* Left panel: dark grey with a subtle royal-blue tint */
 #list {
   /* layout */
   display: flex;
-  flex:3;
-  flex-direction:row;
-  
+  flex: 3;
+  flex-direction: row;
 
-  /* colors (use Bootstrap primary) */
+  /* slightly lighter dark surface with a subtle blue tint */
   color: var(--bs-light);
-  background-image: linear-gradient(
-    135deg,
-    rgba(var(--bs-primary-rgb), 1) 0%,
-    rgba(var(--bs-primary-rgb), 0.8) 60%,
-    rgba(var(--bs-primary-rgb), 0.65) 100%
-  );
+  background-image: linear-gradient(180deg, #33373b 0%, #2f3134 60%),
+    linear-gradient(135deg, rgba(var(--bs-primary-rgb), 0.08), rgba(var(--bs-primary-rgb), 0.03));
+  background-blend-mode: overlay, normal;
 
   /* type */
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: left;
   padding: 1.5rem;
 }
 
@@ -46,28 +59,73 @@ main {
   flex:1;
   align-items: center;
   justify-content: center;
-
-  /* surface */
-  
-  background-color: var(--bs-light);
+  /* surface: darker royal-blue brand background with subtle depth */
+  background-image: linear-gradient(180deg, #2740b2 0%, #20358f 60%);
+  color: var(--bs-light);
   padding: 2rem 1.25rem;
 }
 
 /* Optional “card” feel for the form fields without changing HTML */
 #form > .form-shell,
 #form > form {
-  background-color: var(--bs-body-bg);
+  background-color: var(--surface-grey);
   border-radius: .75rem;
   box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+  /* darker, more pronounced border to separate from royal-blue background */
+  border: 1px solid rgba(108,117,125,0.5); /* uses --muted-grey (108,117,125) at higher opacity */
+  transition: border-color .18s ease, box-shadow .18s ease, transform .12s ease;
   width: 100%;
   max-width: 560px;
   padding: 1.5rem;
 }
 
-/* Labels pick up brand color */
+/* When interacting with the form, make the border pop and add a soft glow */
+#form:focus-within > .form-shell,
+#form:focus-within > form,
+#form:focus-within .form-shell,
+#form:focus-within form {
+  border-color: rgba(var(--bs-primary-rgb), 0.36);
+  box-shadow: 0 .8rem 1.6rem rgba(0,0,0,0.18), 0 0 0 .18rem rgba(var(--bs-primary-rgb), 0.08);
+  transform: translateY(-2px);
+}
+
+/* Inner form card should use dark text for readability on the light card */
+#form > .form-shell,
+#form > form,
+#form .form-shell,
+#form form {
+  color: var(--ink-black);
+}
+
+/* Ensure labels/inputs inside the inner card are black */
+#form .form-shell .form-label,
+#form .form-shell label,
+#form .form-shell .form-text,
+#form .form-shell .form-control,
+#form .form-shell .form-select {
+  color: var(--ink-black) !important;
+}
+
+/* Labels on the royal-blue form should be light for contrast */
 #form .form-label {
-  color: var(--bs-primary);
+  color: var(--bs-light);
   font-weight: 600;
+}
+
+/* Append a visible colon after each form label and the form title (visual only) */
+#form .form-label::after,
+#form .form-check-label::after {
+  content: ":";
+  margin-left: .25rem;
+  color: inherit;
+}
+
+/* Form title (inside the form) should also show a colon */
+#taskForm h1::after,
+#taskForm .h4::after {
+  content: ":";
+  margin-left: .25rem;
+  color: inherit;
 }
 
 /* Inputs use Bootstrap focus ring coloring */
@@ -84,8 +142,9 @@ main {
 
 #form .form-control:focus,
 #form .form-select:focus {
-  border-color: rgba(var(--bs-primary-rgb), .9);
-  box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), .25);
+  /* stronger contrast on the royal-blue form: white inner ring + subtle blue outer glow */
+  border-color: rgba(var(--bs-primary-rgb), .95);
+  box-shadow: 0 0 0 .12rem rgba(255,255,255,0.65), 0 0 0 .28rem rgba(var(--bs-primary-rgb), 0.18);
 }
 
 /* Color input gets a subtle ring on hover to match */
@@ -105,8 +164,8 @@ main {
 }
 
 #btnSave:hover {
-  background-color: var(--bs-primary-hover, #0b5ed7); /* fallback if var missing */
-  box-shadow: 0 .5rem 1rem rgba(var(--bs-primary-rgb), .25);
+  background-color: var(--bs-primary-hover, #3256c9); /* fallback if var missing */
+  box-shadow: 0 .5rem 1rem rgba(var(--bs-primary-rgb), .18);
   transform: translateY(-1px);
 }
 
@@ -134,13 +193,32 @@ main {
 /* ---------- Task cards ---------- */
 #tasksList .card {
   position: relative;
-  background: #fff;
-  color: var(--bs-body-color);              /* ensure dark text on white card */
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--surface-grey); /* soft grey card background */
+  color: var(--bs-body-color);              /* ensure dark text on grey card */
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06); /* slightly softer shadow on grey */
   transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
   overflow: hidden;                         /* keeps accent strip rounded */
+}
+
+/* Checkerboard alternation for task cards across different column counts */
+/* Mobile / single column: alternate by row (odd = grey, even = white) */
+#tasksList.row-cols-1 > .col:nth-child(odd) .card { background: var(--surface-grey); }
+#tasksList.row-cols-1 > .col:nth-child(even) .card { background: #fff; }
+
+/* Small screens: two columns -> use 4n grouping to create checkerboard */
+@media (min-width: 576px) {
+  #tasksList.row-cols-sm-2 > .col:nth-child(4n+1) .card,
+  #tasksList.row-cols-sm-2 > .col:nth-child(4n+4) .card { background: var(--surface-grey); }
+  #tasksList.row-cols-sm-2 > .col:nth-child(4n+2) .card,
+  #tasksList.row-cols-sm-2 > .col:nth-child(4n+3) .card { background: #fff; }
+}
+
+/* Large screens: three columns -> odd/even sequence gives checkerboard */
+@media (min-width: 992px) {
+  #tasksList.row-cols-lg-3 > .col:nth-child(odd) .card { background: var(--surface-grey); }
+  #tasksList.row-cols-lg-3 > .col:nth-child(even) .card { background: #fff; }
 }
 
 /* Hover lift */
@@ -155,7 +233,7 @@ main {
   position: absolute;
   inset: 0 auto 0 0;
   width: 6px;
-  background: var(--accent, currentColor); /* prefers --accent; see JS tweak below */
+  background: var(--accent, var(--bs-primary)); /* prefers --accent; see JS tweak below */
   opacity: 1;
 }
 
@@ -173,6 +251,109 @@ main {
 #tasksList .card .card-title {
   font-weight: 700;
   letter-spacing: 0.2px;
+}
+
+/* Make the title row stand out as a gold strip across the top of each card */
+#tasksList .card .card-title {
+  display: block;
+  margin: -1rem -1rem 0 -1rem; /* extend to card edges (compensate for card-body padding) */
+  padding: .7rem 1rem;
+  background: linear-gradient(180deg, #ffd971 0%, #f3c35a 60%);
+  color: #1b1b1b; /* dark text for legibility */
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+/* Slightly tighten body top padding so title + body feel cohesive */
+#tasksList .card .card-body { padding-top: .85rem; }
+
+/* If the card uses a table (current render), style the first row as the gold title strip */
+/* Ensure table fills the card and spacing is reset */
+#tasksList .card .card-body table.task-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Strongly apply the title strip background so it isn't overridden by other rules */
+#tasksList .card .card-body table.task-table tbody tr:first-child th,
+#tasksList .card .card-body table.task-table tbody tr:first-child td {
+  background: linear-gradient(180deg, #ffd971 0%, #f3c35a 60%) !important;
+  color: #1b1b1b !important; /* default: dark text for legibility (Med) */
+  padding: .7rem 1rem;
+  position: relative;
+  z-index: 5; /* make sure the strip appears above the card background */
+}
+
+/* Round the top-left/top-right corners of the gold strip to match the card radius */
+#tasksList .card .card-body table.task-table tbody tr:first-child th:first-child {
+  border-top-left-radius: 14px;
+}
+#tasksList .card .card-body table.task-table tbody tr:first-child td:last-child {
+  border-top-right-radius: 14px;
+}
+
+/* Priority-specific title strip colors */
+/* High -> red strip with white text */
+/* High priority: red strip */
+#tasksList .card[data-priority-text="High"] .card-body table.task-table tbody tr:first-child th,
+#tasksList .card[data-priority-text="High"] .card-body table.task-table tbody tr:first-child td {
+  background: linear-gradient(180deg, #ff6b6b 0%, #e74c3c 60%) !important;
+  color: #fff !important;
+}
+
+/* Med -> keep gold (already default), ensure contrast */
+/* Med priority: gold strip (default) */
+#tasksList .card[data-priority-text="Med"] .card-body table.task-table tbody tr:first-child th,
+#tasksList .card[data-priority-text="Med"] .card-body table.task-table tbody tr:first-child td {
+  background: linear-gradient(180deg, #ffd971 0%, #f3c35a 60%) !important;
+  color: #1b1b1b !important;
+}
+
+/* Low -> green strip with white text */
+/* Low priority: green strip */
+#tasksList .card[data-priority-text="Low"] .card-body table.task-table tbody tr:first-child th,
+#tasksList .card[data-priority-text="Low"] .card-body table.task-table tbody tr:first-child td {
+  background: linear-gradient(180deg, #48c78a 0%, #2ca76b 60%) !important;
+  color: #fff !important;
+}
+
+/* Render the priority as a badge using the .card's data-priority attribute */
+#tasksList .card[data-priority] {
+  position: relative; /* ensure ::after positions relative to card */
+}
+#tasksList .card[data-priority-text]::after {
+  content: attr(data-priority-text);
+  position: absolute;
+  right: 14px;
+  top: 10px; /* sits within the gold strip */
+  transform: translateY(0);
+  background: rgba(27,27,27,0.08);
+  color: #1b1b1b;
+  padding: .28rem .6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .85rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 6; /* above the gold strip */
+}
+
+/* Priority color variants on the card pseudo-element */
+/* Color by priority text */
+#tasksList .card[data-priority-text="High"]::after {
+  background: rgba(220,53,69,0.15);
+  border-color: rgba(220,53,69,0.22);
+  color: #7a0b0b;
+}
+#tasksList .card[data-priority-text="Med"]::after {
+  background: rgba(255,193,7,0.12);
+  border-color: rgba(255,193,7,0.18);
+  color: #5f3b00;
+}
+#tasksList .card[data-priority-text="Low"]::after {
+  background: rgba(25,135,84,0.12);
+  border-color: rgba(25,135,84,0.18);
+  color: #074b2a;
 }
 
 #tasksList .badge {
@@ -204,9 +385,18 @@ main {
 /* Handle long descriptions gracefully */
 #tasksList .card-text {
   display: -webkit-box;
+  line-clamp: 4; /* standard property for compatibility */
   -webkit-line-clamp: 4;    /* show up to 4 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Append a colon after each card table header (visual only) */
+#tasksList .card .card-body table.task-table th::after {
+  content: ":";
+  margin-left: .25rem;
+  color: inherit;
+  font-weight: 600;
 }
 
 /* Make the empty state look intentional */
@@ -219,8 +409,8 @@ main {
 }
 
 .app-header {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--ink-black);
+  color: var(--white);
   position: sticky;
   top: 0;
   z-index: 1040;
@@ -234,21 +424,21 @@ main {
 #tasksList .task-card p,
 #tasksList .task-card span,
 #tasksList .task-card strong {
-  color: #000 !important;
+  color: var(--ink-black) !important;
 }
 
 /* Ensure meta rows (labels/values) are black */
 #tasksList .task-card .task-meta,
 #tasksList .task-card .task-meta .label,
 #tasksList .task-card .task-meta .value {
-  color: #000 !important;
+  color: var(--ink-black) !important;
 }
 
 /* Make the status badge black text on light background */
 #tasksList .task-card .task-badge {
-  background-color: #f8f9fa !important; /* light gray */
-  color: #000 !important;
-  border: 1px solid #000 !important;
+  background-color: var(--surface-grey) !important; /* light gray */
+  color: var(--ink-black) !important;
+  border: 1px solid rgba(0,0,0,.08) !important;
 }
 /* No horizontal scrolling inside the card/table */
 .task-card .card-body,
@@ -260,8 +450,8 @@ main {
   white-space: normal !important;
   text-overflow: clip !important;
   word-break: break-word;
-  width: auto !important;       
-
+  width: auto !important;
+}
 .task-table td {
   padding: .4rem .5rem;
   vertical-align: middle;
@@ -274,7 +464,7 @@ main {
 .task-table th:nth-child(1), .task-table td:nth-child(1) { width: 18%; } /* Title */
 .task-table th:nth-child(2), .task-table td:nth-child(2) { width: 30%; } /* Description */
 .task-table th:nth-child(3), .task-table td:nth-child(3) { width: 16%; } /* Date */
-task-table th:nth-child(4), .task-table td:nth-child(4) { width: 10%; }  /* Status */
+.task-table th:nth-child(4), .task-table td:nth-child(4) { width: 10%; }  /* Status */
 .task-table th:nth-child(5), .task-table td:nth-child(5) { width: 10%; } /* Budget */
 .task-table th:nth-child(6), .task-table td:nth-child(6) { width: 8%; }  /* Color */
 .task-table th:nth-child(7), .task-table td:nth-child(7) { width: 8%; }  /* Actions */
@@ -305,5 +495,4 @@ task-table th:nth-child(4), .task-table td:nth-child(4) { width: 10%; }  /* Stat
 /* Hide long color hex on small screens; show from md+ */
 @media (max-width: 767.98px) {
   .task-table .color-hex { display: none; }
-}
 }
